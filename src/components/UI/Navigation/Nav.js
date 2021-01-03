@@ -3,11 +3,12 @@ import "./nav.css";
 
 const Nav = () => {
   return (
-    <div className="nav">
-      <header>
+    <header>
+      <div className="nav">
         <h1>Torrence's Flight Booker</h1>
-      </header>
-    </div>
+      </div>
+      <div className="nav nav__bottom-fade"></div>
+    </header>
   );
 };
 

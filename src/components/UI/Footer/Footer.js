@@ -3,9 +3,9 @@ import "./footer.css";
 
 const Footer = () => {
   return (
-    <div className="footer-wrapper">
-      <footer>Creation by Torrence.</footer>
-    </div>
+    <footer>
+      <div className="footer-wrapper">Creation by Torrence.</div>
+    </footer>
   );
 };
 

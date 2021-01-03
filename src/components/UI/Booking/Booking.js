@@ -10,7 +10,13 @@ const Booking = () => {
         backgroundImage: `url(${backgroundImage})`,
       }}
     >
-      <h1>Booking Container</h1>
+      <div className="booking__form-container">
+        <h3>WHERE DO YOU WANT TO GO?</h3>
+        <form className="booking__form">
+          <input placeholder="ORIGIN?" />
+          <input placeholder="DESTINATION?"/>
+        </form>
+      </div>
     </div>
   );
 };
