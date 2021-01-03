@@ -1,9 +1,14 @@
 import "./App.css";
+import Nav from "./components/UI/Navigation/Nav";
+import Booking from "./components/UI/Booking/Booking";
+import Footer from "./components/UI/Footer/Footer";
 
 function App() {
   return (
     <div className="App">
-      <h1>Test</h1>
+      <Nav />
+      <Booking />
+      <Footer />
     </div>
   );
 }
