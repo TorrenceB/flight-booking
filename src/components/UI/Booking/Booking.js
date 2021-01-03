@@ -14,7 +14,8 @@ const Booking = () => {
         <h3>WHERE DO YOU WANT TO GO?</h3>
         <form className="booking__form">
           <input placeholder="ORIGIN?" />
-          <input placeholder="DESTINATION?"/>
+          <input placeholder="DESTINATION?" />
+          <button className="booking__form-button">SEND IT</button>
         </form>
       </div>
     </div>
