@@ -6,7 +6,7 @@
 .nav__bottom-fade {
   position: relative;
   bottom: -30px;
-  height: 30px;
+  height: 35px;
   background-image: linear-gradient(
     to bottom,
     rgb(252, 252, 252),
