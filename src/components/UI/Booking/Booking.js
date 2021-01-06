@@ -7,6 +7,7 @@ const Booking = () => {
   const [trip, setTrip] = useState({});
 
   useEffect(() => {
+    // TODO: Create trip model
     setTrip(
       flightClient({
         query: "Stockholm",
@@ -17,6 +18,8 @@ const Booking = () => {
     );
     console.log("Trip:", trip);
   }, []);
+  
+  // 
 
   return (
     <div
@@ -30,7 +33,7 @@ const Booking = () => {
         <form className="booking__form">
           {/* TODO: Add inputs for dates */}
           <input placeholder="ORIGIN?" />
-          <input placeholder="DESTINATION?" />
+          <input placeholder="DESTINATION?" value=""/>
           <input placeholder="DEPARTURE DATE" />
           <input placeholder="RETURN DATE" />
           <button className="booking__form-button">SEND IT</button>

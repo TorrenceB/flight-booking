@@ -5,12 +5,10 @@ const flightClient = ({ query, countryName, localCurrency, locale }) => {
   const API_KEY = process.env.REACT_APP_FLIGHT_KEY;
   const options = {
     method: "GET",
-    url: "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
+    url:
+      `https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/${UK}/${GBP}/${en-GB}/`,
     params: {
-      query: query,
-      country: countryName,
-      currency: localCurrency,
-      locale: locale,
+      query: 'London',
     },
     headers: {
       "x-rapidapi-key": `${API_KEY}`,
