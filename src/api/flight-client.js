@@ -1,12 +1,11 @@
 import axios from "axios";
 
 // Base URL for flight requests
-const flightClient = ({query, countryName, localCurrency, locale }) => {
+const flightClient = ({ query, countryName, localCurrency, locale }) => {
   const API_KEY = process.env.REACT_APP_FLIGHT_KEY;
   const options = {
     method: "GET",
-    url:
-      "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
+    url: "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
     params: {
       query: query,
       country: countryName,
@@ -27,7 +26,7 @@ const flightClient = ({query, countryName, localCurrency, locale }) => {
     .catch((error) => {
       Error(error);
     });
-  console.log(instance);
+  console.log("Instance:", instance);
 };
 
 export default flightClient;
