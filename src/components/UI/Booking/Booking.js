@@ -4,20 +4,27 @@ import backgroundImage from "./background.jpg";
 import flightClient from "../../../api/flight-client";
 
 const Booking = () => {
-  // const [trip, setTrip] = useState({});
-  const [destination, setDestination] = useState("");
+  const [trip, setTrip] = useState({
+    origin: "",
+    destination: "",
+  });
+  // const [destination, setDestination] = useState("");
 
   let onChangeHandler = (e) => {
     let destination = "";
     destination = e.target.value;
-    setDestination(destination);
+    setTrip({
+      origin: "",
+      destination: destination,
+    });
+    // setDestination(destination);
     console.log(destination);
   };
 
   let onClickHandler = (e) => {
     e.preventDefault();
     flightClient({
-      query: destination,
+      query: trip.destination,
       countryName: "UK",
       localCurrency: "GBP",
       locale: "en-GB",
@@ -38,7 +45,7 @@ const Booking = () => {
           <input
             type="text"
             placeholder="DESTINATION?"
-            value={destination}
+            value={trip.destination}
             onChange={onChangeHandler}
           />
           <input placeholder="DEPARTURE DATE" />
