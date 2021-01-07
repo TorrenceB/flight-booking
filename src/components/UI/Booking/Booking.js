@@ -4,22 +4,25 @@ import backgroundImage from "./background.jpg";
 import flightClient from "../../../api/flight-client";
 
 const Booking = () => {
-  const [trip, setTrip] = useState({});
+  // const [trip, setTrip] = useState({});
+  const [destination, setDestination] = useState("");
 
-  useEffect(() => {
-    // TODO: Create trip model
-    setTrip(
-      flightClient({
-        query: "Stockholm",
-        countryName: "UK",
-        localCurrency: "GBP",
-        locale: "en-GB",
-      })
-    );
-    console.log("Trip:", trip);
-  }, []);
-  
-  // 
+  let onChangeHandler = (e) => {
+    let destination = "";
+    destination = e.target.value;
+    setDestination(destination);
+    console.log(destination);
+  };
+
+  let onClickHandler = (e) => {
+    e.preventDefault();
+    flightClient({
+      query: destination,
+      countryName: "UK",
+      localCurrency: "GBP",
+      locale: "en-GB",
+    });
+  };
 
   return (
     <div
@@ -31,12 +34,18 @@ const Booking = () => {
       <div className="booking__form-container">
         <h3>WHERE DO YOU WANT TO GO?</h3>
         <form className="booking__form">
-          {/* TODO: Add inputs for dates */}
           <input placeholder="ORIGIN?" />
-          <input placeholder="DESTINATION?" value=""/>
+          <input
+            type="text"
+            placeholder="DESTINATION?"
+            value={destination}
+            onChange={onChangeHandler}
+          />
           <input placeholder="DEPARTURE DATE" />
           <input placeholder="RETURN DATE" />
-          <button className="booking__form-button">SEND IT</button>
+          <button className="booking__form-button" onClick={onClickHandler}>
+            SEND IT
+          </button>
         </form>
       </div>
     </div>

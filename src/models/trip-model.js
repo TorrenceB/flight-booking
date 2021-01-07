@@ -1,4 +1,4 @@
-let tripModel = ({ userQuery, countryName, localCurrency, locale, origin, destination}) => {
-    userQuery: userQuery || '',
+// let tripModel = ({ userQuery, countryName, localCurrency, locale, origin, destination}) => {
+//     userQuery: userQuery || '',
 
-};
+// };
