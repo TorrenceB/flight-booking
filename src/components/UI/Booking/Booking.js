@@ -8,17 +8,12 @@ const Booking = () => {
     origin: "",
     destination: "",
   });
-  // const [destination, setDestination] = useState("");
 
   let onChangeHandler = (e) => {
-    let destination = "";
-    destination = e.target.value;
-    setTrip({
-      origin: "",
-      destination: destination,
-    });
-    // setDestination(destination);
-    console.log(destination);
+    let trip = {};
+    trip[e.target.name] = e.target.value;
+    setTrip(trip);
+    console.log(trip);
   };
 
   let onClickHandler = (e) => {
@@ -41,11 +36,18 @@ const Booking = () => {
       <div className="booking__form-container">
         <h3>WHERE DO YOU WANT TO GO?</h3>
         <form className="booking__form">
-          <input placeholder="ORIGIN?" />
+          <input
+            type="text"
+            placeholder="ORIGIN?"
+            name="origin"
+            value={trip.origin || ""}
+            onChange={onChangeHandler}
+          />
           <input
             type="text"
             placeholder="DESTINATION?"
-            value={trip.destination}
+            name="destination"
+            value={trip.destination || ""}
             onChange={onChangeHandler}
           />
           <input placeholder="DEPARTURE DATE" />
