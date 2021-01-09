@@ -10,9 +10,10 @@ const Booking = () => {
   });
 
   let onChangeHandler = (e) => {
-    let trip = {};
-    trip[e.target.name] = e.target.value;
-    setTrip(trip);
+    setTrip((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
     console.log(trip);
   };
 
@@ -24,6 +25,8 @@ const Booking = () => {
       localCurrency: "GBP",
       locale: "en-GB",
     });
+    trip.origin = "";
+    trip.destination = "";
   };
 
   return (
