@@ -1,0 +1,18 @@
+.autocomplete {
+  /* position: relative;
+  display: flex; */
+}
+
+.autocomplete__list-items {
+  background-color: red;
+  z-index: 1;
+  /* position: absolute; */
+}
+
+.autocomplete__item {
+  padding: 3%;
+  margin-left: 1%;
+  margin-right: 1%;
+  margin-top: 1%;
+  list-style: none;
+}
