@@ -41,6 +41,7 @@ const Booking = () => {
       <div className="booking__form-container">
         <h3>WHERE DO YOU WANT TO GO?</h3>
         <form className="booking__form">
+          {/* ToDo: Refactor inputs into single component */}
           <input
             autoComplete="off"
             list="origins"
@@ -53,20 +54,36 @@ const Booking = () => {
           <datalist id="origins">
             {suggestions.length !== 0
               ? suggestions["Places"].map((suggestion) => {
-                  return <option value={suggestion["PlaceName"]}></option>;
+                  return (
+                    <option
+                      key={suggestion.PlaceId}
+                      value={suggestion.PlaceName}
+                    ></option>
+                  );
                 })
               : ""}
           </datalist>
-          {/* <Autocomplete /> */}
           <input
             autoComplete="off"
+            list="destinations"
             type="text"
             placeholder="DESTINATION?"
             name="destination"
             value={trip.destination || ""}
             onChange={onChangeHandler}
           />
-          {/* <Autocomplete /> */}
+          <datalist id="destinations">
+            {suggestions.length !== 0
+              ? suggestions["Places"].map((suggestion) => {
+                  return (
+                    <option
+                      key={suggestion.PlaceId}
+                      value={suggestion.PlaceName}
+                    ></option>
+                  );
+                })
+              : ""}
+          </datalist>
           <input placeholder="DEPARTURE DATE" />
           <input placeholder="RETURN DATE" />
           <button className="booking__form-button" onClick={onClickHandler}>
