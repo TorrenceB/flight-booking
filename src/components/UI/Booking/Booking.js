@@ -10,13 +10,14 @@ const Booking = () => {
     destination: "",
   });
 
+  const [suggestions, setSuggestions] = useState([]);
+
   let onChangeHandler = (e) => {
-    flightClient({ query: e.target.value });
+    flightClient({ query: e.target.value, setSuggestions: setSuggestions });
     setTrip((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
-    console.log(trip);
   };
 
   let onClickHandler = (e) => {
@@ -42,13 +43,21 @@ const Booking = () => {
         <form className="booking__form">
           <input
             autoComplete="off"
+            list="origins"
             type="text"
             placeholder="ORIGIN?"
             name="origin"
             value={trip.origin || ""}
             onChange={onChangeHandler}
           />
-          <Autocomplete />
+          <datalist id="origins">
+            {suggestions.length !== 0
+              ? suggestions["Places"].map((suggestion) => {
+                  return <option value={suggestion["PlaceName"]}></option>;
+                })
+              : ""}
+          </datalist>
+          {/* <Autocomplete /> */}
           <input
             autoComplete="off"
             type="text"

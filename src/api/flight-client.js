@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Base URL for flight requests
-const flightClient = ({ query, params }) => {
+const flightClient = ({ query, params, setSuggestions }) => {
   const API_KEY = process.env.REACT_APP_FLIGHT_KEY;
   const baseUrl =
     "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices";
@@ -24,7 +24,9 @@ const flightClient = ({ query, params }) => {
   const instance = axios
     .request(options)
     .then((response) => {
-      console.log(response.data);
+      // Todo: Parse response to JS object
+      console.log("Response:", response.data);
+      setSuggestions(response.data);
     })
     .catch((error) => {
       Error(error);

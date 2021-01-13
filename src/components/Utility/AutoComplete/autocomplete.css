@@ -1,6 +1,7 @@
 .autocomplete {
-  /* position: relative;
-  display: flex; */
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 
 .autocomplete__list-items {

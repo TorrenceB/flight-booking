@@ -7,8 +7,8 @@ const Autocomplete = () => {
   return (
     <div className="autocomplete">
       <ul className="autocomplete__list-items">
-        {suggestions.map((suggestion) => {
-          return <li className="autocomplete__item">{suggestion}</li>;
+        {suggestions.map((suggestion, index) => {
+          return <li className="autocomplete__item" key={index}>{suggestion}</li>;
         })}
       </ul>
     </div>
