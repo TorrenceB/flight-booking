@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// Base URL for flight requests
+// Todo: Implement use of propTypes
 const flightClient = ({ query, params, setSuggestions }) => {
   const API_KEY = process.env.REACT_APP_FLIGHT_KEY;
   const baseUrl =
@@ -25,13 +25,20 @@ const flightClient = ({ query, params, setSuggestions }) => {
     .request(options)
     .then((response) => {
       // Todo: Parse response to JS object
+      // const jsonData = JSON.parse(response.data);
       console.log("Response:", response.data);
       setSuggestions(response.data);
     })
     .catch((error) => {
-      Error(error);
+      if (error.response) {
+        console.log(error.response);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log("Application error...");
+      }
     });
-  console.log("Instance:", instance);
+  return instance;
 };
 
 export default flightClient;

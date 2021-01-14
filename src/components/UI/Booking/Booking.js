@@ -51,6 +51,10 @@ const Booking = () => {
             value={trip.origin || ""}
             onChange={onChangeHandler}
           />
+          {/* Todo: Find better alternative 
+              for implementing an autosuggest. 
+              datalist element has bad support...
+          */}
           <datalist id="origins">
             {suggestions.length !== 0
               ? suggestions["Places"].map((suggestion) => {

@@ -31,6 +31,10 @@
   color: #000000;
 }
 
+input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
 .booking__form-button {
   padding: 2%;
   margin: 2%;
