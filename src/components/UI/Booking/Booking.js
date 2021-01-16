@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import "./booking.css";
 import backgroundImage from "./background.jpg";
 import flightClient from "../../../api/flight-client";
@@ -9,11 +9,32 @@ const Booking = () => {
     origin: "",
     destination: "",
   });
-
   const [suggestions, setSuggestions] = useState([]);
 
+  const debounce = (callback, rate) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        callback(...args);
+      }, rate);
+    };
+  };
+
+  const handler = useCallback(
+    debounce(
+      (query) =>
+        flightClient({
+          query: query,
+          setSuggestions: setSuggestions,
+        }),
+      2000
+    ),
+    []
+  );
+
   let onChangeHandler = (e) => {
-    flightClient({ query: e.target.value, setSuggestions: setSuggestions });
+    handler(e.target.value);
     setTrip((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -22,9 +43,6 @@ const Booking = () => {
 
   let onClickHandler = (e) => {
     e.preventDefault();
-    // flightClient({
-    //   query: trip.destination,
-    // });
     setTrip({
       origin: "",
       destination: "",
@@ -42,7 +60,11 @@ const Booking = () => {
         <h3>WHERE DO YOU WANT TO GO?</h3>
         <form className="booking__form">
           {/* ToDo: Refactor inputs into single component */}
-          <input
+          {/* Todo: Find better alternative 
+              for implementing an autosuggest. 
+              datalist element has bad support...
+          */}
+          {/* <input
             autoComplete="off"
             list="origins"
             type="text"
@@ -51,10 +73,6 @@ const Booking = () => {
             value={trip.origin || ""}
             onChange={onChangeHandler}
           />
-          {/* Todo: Find better alternative 
-              for implementing an autosuggest. 
-              datalist element has bad support...
-          */}
           <datalist id="origins">
             {suggestions.length !== 0
               ? suggestions["Places"].map((suggestion) => {
@@ -66,7 +84,7 @@ const Booking = () => {
                   );
                 })
               : ""}
-          </datalist>
+          </datalist> */}
           <input
             autoComplete="off"
             list="destinations"
