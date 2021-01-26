@@ -6,8 +6,8 @@ import Autocomplete from "../../Utility/AutoComplete/Autocomplete";
 
 const Booking = () => {
   const [trip, setTrip] = useState({
-    origin: "",
     destination: "",
+    placeId: "",
   });
   const [suggestions, setSuggestions] = useState([]);
 
@@ -39,14 +39,16 @@ const Booking = () => {
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+    console.log(suggestions);
   };
 
   let onClickHandler = (e) => {
     e.preventDefault();
     setTrip({
-      origin: "",
       destination: "",
+      destinationPlaceId: "",
     });
+    setSuggestions([]);
   };
 
   return (
@@ -89,18 +91,19 @@ const Booking = () => {
             autoComplete="off"
             list="destinations"
             type="text"
-            placeholder="DESTINATION?"
+            placeholder="DESTINATION"
             name="destination"
             value={trip.destination || ""}
             onChange={onChangeHandler}
           />
           <datalist id="destinations">
             {suggestions.length !== 0
-              ? suggestions["Places"].map((suggestion) => {
+              ? suggestions.map((suggestion) => {
+                  // Todo: Suggestions don't drop down when entire country entered
                   return (
                     <option
                       key={suggestion.PlaceId}
-                      value={suggestion.PlaceName}
+                      value={suggestion.destination}
                     ></option>
                   );
                 })

@@ -25,9 +25,13 @@ const flightClient = ({ query, params, setSuggestions }) => {
     .request(options)
     .then((response) => {
       // Todo: Parse response to JS object
-      // const jsonData = JSON.parse(response.data);
-      console.log("Response:", response.data);
-      setSuggestions(response.data);
+      const data = response.data;
+      const placesObj = data["Places"].map((d) => ({
+        destination: d.PlaceName,
+        PlaceId: d.PlaceId,
+      }));
+      console.log("Places Obj:", placesObj);
+      setSuggestions(placesObj);
     })
     .catch((error) => {
       if (error.response) {
