@@ -28,9 +28,9 @@ const flightClient = ({ query, params, setSuggestions }) => {
       const data = response.data;
       const placesObj = data["Places"].map((d) => ({
         destination: d.PlaceName,
-        PlaceId: d.PlaceId,
+        placeId: d.PlaceId,
       }));
-      console.log("Places Obj:", placesObj);
+      // console.log("Places Obj:", placesObj);
       setSuggestions(placesObj);
     })
     .catch((error) => {
