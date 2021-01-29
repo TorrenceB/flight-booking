@@ -3,7 +3,6 @@ import "./booking.css";
 import backgroundImage from "./background.jpg";
 import flightClient from "../../../api/flight-client";
 import Autocomplete from "../../Utility/AutoComplete/Autocomplete";
-import DataListInput from "react-datalist-input";
 
 const Booking = () => {
   const [trip, setTrip] = useState({
@@ -35,12 +34,21 @@ const Booking = () => {
   );
 
   let onChangeHandler = (e) => {
-    // let placeId = suggestions.length >= 1 ? suggestions[0].placeId : "";
+    let selectedPlace =
+      suggestions.length >= 1
+        ? suggestions.find((suggestion) => {
+            if (suggestion.destination === e.target.value) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+        : "";
     handler(e.target.value);
     setTrip((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
-      // placeId: placeId,
+      placeId: selectedPlace?.placeId,
     }));
   };
 
@@ -55,7 +63,6 @@ const Booking = () => {
 
   return (
     console.log("Trip: ", trip),
-    console.log("suggestions: ", suggestions),
     (
       <div
         className="booking"
@@ -92,29 +99,7 @@ const Booking = () => {
                 })
               : ""}
           </datalist> */}
-            <DataListInput
-              placeholder="DESTINATION"
-              value={trip.destination || ""}
-              items={
-                suggestions.map((suggestion) => ({
-                  key: suggestion.placeId,
-                  label: suggestion.destination,
-                }))
-                // suggestions.length !== 0
-                //   ? suggestions.map((suggestion) => {
-                //       return (
-                //         <option
-                //           key={suggestion.placeId}
-                //           value={suggestion.destination}
-                //         ></option>
-                //       );
-                //     })
-                //   : ""
-              }
-              onSelect={() => console.log("Item selected")}
-              onInput={onChangeHandler}
-            />
-            {/* <input
+            <input
               autoComplete="off"
               list="destinations"
               type="text"
@@ -135,7 +120,7 @@ const Booking = () => {
                     );
                   })
                 : ""}
-            </datalist> */}
+            </datalist>
             <input placeholder="DEPARTURE DATE" />
             <input placeholder="RETURN DATE" />
             <button className="booking__form-button" onClick={onClickHandler}>
