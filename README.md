@@ -50,3 +50,6 @@ Now I need to set the state of the trip object. But how? I'm able to simply set 
 
 #### **Error Handling Methods**
 ...
+
+#### **API Calls and endpoint organization**
+...
