@@ -110,7 +110,7 @@ const Booking = () => {
             />
             <datalist id="destinations">
               {suggestions.length !== 0
-                ? suggestions.map((suggestion, index) => {
+                ? suggestions.map((suggestion) => {
                     // Todo: Suggestions don't drop down when entire country entered
                     return (
                       <option

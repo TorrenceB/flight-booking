@@ -1,17 +1,18 @@
 import axios from "axios";
+import endpoints from "../api/endpoints"
 
 // Todo: Implement use of propTypes
 const flightClient = ({ query, params, setSuggestions }) => {
   const API_KEY = process.env.REACT_APP_FLIGHT_KEY;
   const baseUrl =
     "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices";
-  const endPoints = {
-    listPlaces: "/autosuggest/v1.0/US/USD/en-US/",
-    browseQuotes: "/browsequotes/v1.0/US/USD/en-US/SFO-sky/JFK-sky/2019-09-01",
-  };
+  // const endPoints = {
+  //   listPlaces: "/autosuggest/v1.0/US/USD/en-US/",
+  //   browseQuotes: "/browsequotes/v1.0/US/USD/en-US/SFO-sky/JFK-sky/2019-09-01",
+  // };
   const options = {
     method: "GET",
-    url: `${baseUrl}${endPoints.listPlaces}`,
+    url: `${baseUrl}${endpoints.listPlaces}`,
     params: {
       query: query,
     },
@@ -30,7 +31,6 @@ const flightClient = ({ query, params, setSuggestions }) => {
         destination: d.PlaceName,
         placeId: d.PlaceId,
       }));
-      // console.log("Places Obj:", placesObj);
       setSuggestions(placesObj);
     })
     .catch((error) => {
