@@ -18,7 +18,7 @@
   npm start
 ```
 - Make Pull Request: 
-  Any and all *constructive* criticism is much appreciated. I'm still very much a novice and am constantly seeking out ways to improve and learn from the veterans     out there whom possess a passion for what they do... Feedback is incredibly encouraged.  
+  Any and all *constructive* criticism is much appreciated. I'm still very much a novice and am constantly seeking out ways to improve and learn from the veterans     out there whom possess a passion for what they do...  
   
 ### Takeaways/Stream of Conciousness/Concepts Applied
 
