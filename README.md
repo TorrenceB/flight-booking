@@ -23,6 +23,7 @@
 ### Takeaways/Stream of Conciousness/Concepts Applied
 
 #### **Debouncing** 
+...
 
 #### **Array.prototype.find()**
 The find method is a method of iteration on the JavaScript array object. It's purpose is to return a value from the iteration which satisfies conditions    provided by the programmer and if the condition isn't met, ```find()``` returns undefined. Find takes a callback function and an optional ```thisArg``` as arguments. The anonymus callback function takes three arguments but I'm only going to focus on the primary argument for my particular context; this argument is simply the current element of the iteration. This callback get executed once for every element of the array **UNTIL** the callback returns a truthy value, unlike the ```map()``` method which iterates over every element until it reaches the end of the array. Once a truthy is reached, find will return the **VALUE** of that element. 
@@ -48,3 +49,4 @@ This is now where our second piece of state comes in. The second piece is simply
 Now I need to set the state of the trip object. But how? I'm able to simply set the ```destination``` property to whatever the user types into the input (```e.target.value```) but I need the ```placeId``` property and not the ```destination```. I begin by declaring a variable ```selectedPlace``` inside my ```onChangeHandler()```. This is where ```find()``` comes in handy. I call ```suggestions.find()``` on my suggestions array and will pass in a single callback function as the argument to ```find()```. To reiterate, ```find()``` returns the value of the element that satisfies the "test" function (our callback) passed into ```find()```. My test is explained as such: if the value of the ```destination``` property matches the input of our user (```e.target.value```) then return true, else continue the iteration until the value matches or an undefined is returned. When true is met, the element which satisfies those conditions is returned by ```find()``` and as a result, I now have access to that entire object. Therefore, from here I'm able to set the new state of my trip by assigning my variable ```selectedPlace.placeId``` to the ```placeId``` of my trip object.    
 
 #### **Error Handling Methods**
+...
