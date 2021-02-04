@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import "./booking.css";
 import backgroundImage from "./background.jpg";
-import flightClient from "../../../api/flight-client";
+import flightClient, { callFlightClient } from "../../../api/flight-client";
 import Autocomplete from "../../Utility/AutoComplete/Autocomplete";
 
 import endpoints from "../../../api/endpoints";
@@ -24,35 +24,57 @@ const Booking = () => {
     };
   };
 
+  const callResponse = callFlightClient({
+    endpoint: "",
+    params: {},
+  });
+  setSuggestions(callResponse);
+
   const suggestionHandler = useCallback(
     debounce(
-      (query) =>
-        axios
-          .request(
-            flightClient({
-              endpoint: endpoints(),
-              params: {
-                query: query,
-              },
-            })
-          )
-          .then((response) => {
-            const data = response.data;
-            const placesObj = data["Places"].map((d) => ({
-              destination: d.PlaceName,
-              placeId: d.PlaceId,
-            }));
-            setSuggestions(placesObj);
-          })
-          .catch((error) => {
-            if (error.response) {
-              console.log(error.response);
-            } else if (error.request) {
-              console.log(error.request);
-            } else {
-              console.log("Application error...");
-            }
-          }),
+      (query) => {
+        // This will be a promise!
+        const callResponse = callFlightClient({
+          endpoint: "/autosuggest/v1.0/US/USD/en-US/",
+          params: {
+            query: query,
+          },
+        })
+
+        callResponse.then((data) => {
+          const transformedSuggestions = callResponse.Places.map((d) => ({
+            destination: d.PlaceName,
+            placeId: d.PlaceId,
+          }));
+          setSuggestions(transformedSuggestions);
+        })
+      },
+      // axios
+      //   .request(
+      //   flightClient({
+      //     endpoint: endpoints.listPlaces,
+      //     params: {
+      //       query: query,
+      //     },
+      //   })
+      // )
+      // .then((response) => {
+      //   const data = response.data;
+      //   const placesObj = data["Places"].map((d) => ({
+      //     destination: d.PlaceName,
+      //     placeId: d.PlaceId,
+      //   }));
+      //   setSuggestions(placesObj);
+      // })
+      // .catch((error) => {
+      //   if (error.response) {
+      //     console.log(error.response);
+      //   } else if (error.request) {
+      //     console.log(error.request);
+      //   } else {
+      //     console.log("Application error...");
+      //   }
+      // }),
       2000
     ),
     []

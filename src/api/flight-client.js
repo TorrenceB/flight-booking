@@ -1,5 +1,16 @@
 import axios from "axios";
 
+export const callFlightClient = ({ endpoint, params }) => {
+  /* 
+  TODO:
+  Implement the api call and return the response.
+  The return will be a promise!
+  */
+  return {
+    places: [],
+  };
+};
+
 // Todo: Implement use of propTypes
 const flightClient = ({ params, endpoint }) => {
   const API_KEY = process.env.REACT_APP_FLIGHT_KEY;
@@ -17,29 +28,22 @@ const flightClient = ({ params, endpoint }) => {
     },
   };
 
-  return options;
-
-//   const instance = axios
-//   .request(options)
-//   .then((response) => {
-//     // Todo: Parse response to JS object
-//     const data = response.data;
-//     const placesObj = data["Places"].map((d) => ({
-//       destination: d.PlaceName,
-//       placeId: d.PlaceId,
-//     }));
-//     setSuggestions(placesObj);
-//   })
-//   .catch((error) => {
-//     if (error.response) {
-//       console.log(error.response);
-//     } else if (error.request) {
-//       console.log(error.request);
-//     } else {
-//       console.log("Application error...");
-//     }
-//   });
-// return instance;
+  return axios
+    .request(options)
+    .then((response) => {
+      // Todo: Parse response to JS object
+      const data = response.data;
+      return data;
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log(error.response);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log("Application error...");
+      }
+    });
 };
 
 export default flightClient;
