@@ -1,48 +1,45 @@
 import axios from "axios";
-import endpoints from "../api/endpoints"
 
 // Todo: Implement use of propTypes
-const flightClient = ({ query, params, setSuggestions }) => {
+const flightClient = ({ params, endpoint }) => {
   const API_KEY = process.env.REACT_APP_FLIGHT_KEY;
   const baseUrl =
     "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices";
-  // const endPoints = {
-  //   listPlaces: "/autosuggest/v1.0/US/USD/en-US/",
-  //   browseQuotes: "/browsequotes/v1.0/US/USD/en-US/SFO-sky/JFK-sky/2019-09-01",
-  // };
+
   const options = {
     method: "GET",
-    url: `${baseUrl}${endpoints.listPlaces}`,
-    params: {
-      query: query,
-    },
+    url: `${baseUrl}${endpoint}`,
+    params: params,
     headers: {
       "x-rapidapi-key": `${API_KEY}`,
       "x-rapidapi-host":
         "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
     },
   };
-  const instance = axios
-    .request(options)
-    .then((response) => {
-      // Todo: Parse response to JS object
-      const data = response.data;
-      const placesObj = data["Places"].map((d) => ({
-        destination: d.PlaceName,
-        placeId: d.PlaceId,
-      }));
-      setSuggestions(placesObj);
-    })
-    .catch((error) => {
-      if (error.response) {
-        console.log(error.response);
-      } else if (error.request) {
-        console.log(error.request);
-      } else {
-        console.log("Application error...");
-      }
-    });
-  return instance;
+
+  return options;
+
+//   const instance = axios
+//   .request(options)
+//   .then((response) => {
+//     // Todo: Parse response to JS object
+//     const data = response.data;
+//     const placesObj = data["Places"].map((d) => ({
+//       destination: d.PlaceName,
+//       placeId: d.PlaceId,
+//     }));
+//     setSuggestions(placesObj);
+//   })
+//   .catch((error) => {
+//     if (error.response) {
+//       console.log(error.response);
+//     } else if (error.request) {
+//       console.log(error.request);
+//     } else {
+//       console.log("Application error...");
+//     }
+//   });
+// return instance;
 };
 
 export default flightClient;

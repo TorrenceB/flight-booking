@@ -4,6 +4,9 @@ import backgroundImage from "./background.jpg";
 import flightClient from "../../../api/flight-client";
 import Autocomplete from "../../Utility/AutoComplete/Autocomplete";
 
+import endpoints from "../../../api/endpoints";
+import axios from "axios";
+
 const Booking = () => {
   const [trip, setTrip] = useState({
     destination: "",
@@ -21,16 +24,55 @@ const Booking = () => {
     };
   };
 
-  const handler = useCallback(
+  const suggestionHandler = useCallback(
     debounce(
       (query) =>
-        flightClient({
-          query: query,
-          setSuggestions: setSuggestions,
-        }),
+        axios
+          .request(
+            flightClient({
+              endpoint: endpoints(),
+              params: {
+                query: query,
+              },
+            })
+          )
+          .then((response) => {
+            const data = response.data;
+            const placesObj = data["Places"].map((d) => ({
+              destination: d.PlaceName,
+              placeId: d.PlaceId,
+            }));
+            setSuggestions(placesObj);
+          })
+          .catch((error) => {
+            if (error.response) {
+              console.log(error.response);
+            } else if (error.request) {
+              console.log(error.request);
+            } else {
+              console.log("Application error...");
+            }
+          }),
       2000
     ),
     []
+  );
+
+  const tripHandler = useCallback(
+    debounce(() => {
+      axios
+        .request(
+          flightClient({
+            endpoint: endpoints.browseQuotes,
+          })
+        )
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
   );
 
   let onChangeHandler = (e) => {
@@ -44,7 +86,7 @@ const Booking = () => {
             }
           })
         : "";
-    handler(e.target.value);
+    suggestionHandler(e.target.value);
     setTrip((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -54,11 +96,12 @@ const Booking = () => {
 
   let onClickHandler = (e) => {
     e.preventDefault();
-    setTrip({
-      destination: "",
-      destinationPlaceId: "",
-    });
-    setSuggestions([]);
+    tripHandler();
+    // setTrip({
+    //   destination: "",
+    //   destinationPlaceId: "",
+    // });
+    // setSuggestions([]);
   };
 
   return (
