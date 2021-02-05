@@ -4,9 +4,6 @@ import backgroundImage from "./background.jpg";
 import flightClient, { callFlightClient } from "../../../api/flight-client";
 import Autocomplete from "../../Utility/AutoComplete/Autocomplete";
 
-import endpoints from "../../../api/endpoints";
-import axios from "axios";
-
 const Booking = () => {
   const [trip, setTrip] = useState({
     destination: "",
@@ -24,78 +21,54 @@ const Booking = () => {
     };
   };
 
-  const callResponse = callFlightClient({
-    endpoint: "",
-    params: {},
-  });
-  setSuggestions(callResponse);
+  // const callResponse = callFlightClient({
+  //   endpoint: "",
+  //   params: {},
+  // });
+  // setSuggestions(callResponse);
 
   const suggestionHandler = useCallback(
-    debounce(
-      (query) => {
-        // This will be a promise!
-        const callResponse = callFlightClient({
-          endpoint: "/autosuggest/v1.0/US/USD/en-US/",
-          params: {
-            query: query,
-          },
-        })
+    debounce((query) => {
+      // This will be a promise!
+      const callResponse = callFlightClient({
+        endpoint: "/autosuggest/v1.0/US/USD/en-US/",
+        params: {
+          query: query,
+        },
+      });
 
-        callResponse.then((data) => {
-          const transformedSuggestions = callResponse.Places.map((d) => ({
-            destination: d.PlaceName,
-            placeId: d.PlaceId,
-          }));
-          setSuggestions(transformedSuggestions);
-        })
-      },
-      // axios
-      //   .request(
-      //   flightClient({
-      //     endpoint: endpoints.listPlaces,
-      //     params: {
-      //       query: query,
-      //     },
-      //   })
-      // )
-      // .then((response) => {
-      //   const data = response.data;
-      //   const placesObj = data["Places"].map((d) => ({
-      //     destination: d.PlaceName,
-      //     placeId: d.PlaceId,
-      //   }));
-      //   setSuggestions(placesObj);
-      // })
-      // .catch((error) => {
-      //   if (error.response) {
-      //     console.log(error.response);
-      //   } else if (error.request) {
-      //     console.log(error.request);
-      //   } else {
-      //     console.log("Application error...");
-      //   }
-      // }),
-      2000
-    ),
+      callResponse.then((data) => {
+        const transformedSuggestions = data.Places.map((d) => ({
+          destination: d.PlaceName,
+          placeId: d.PlaceId,
+        }));
+        setSuggestions(transformedSuggestions);
+        // const transformedSuggestions = callResponse.Places.map((d) => ({
+        //   destination: d.PlaceName,
+        //   placeId: d.PlaceId,
+        // }));
+        // setSuggestions(transformedSuggestions);
+      });
+    }, 2000),
     []
   );
 
-  const tripHandler = useCallback(
-    debounce(() => {
-      axios
-        .request(
-          flightClient({
-            endpoint: endpoints.browseQuotes,
-          })
-        )
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    })
-  );
+  // const tripHandler = useCallback(
+  //   debounce(() => {
+  //     axios
+  //       .request(
+  //         flightClient({
+  //           endpoint: endpoints.browseQuotes,
+  //         })
+  //       )
+  //       .then((response) => {
+  //         console.log(response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   })
+  // );
 
   let onChangeHandler = (e) => {
     let selectedPlace =
@@ -118,7 +91,6 @@ const Booking = () => {
 
   let onClickHandler = (e) => {
     e.preventDefault();
-    tripHandler();
     // setTrip({
     //   destination: "",
     //   destinationPlaceId: "",

@@ -3,16 +3,9 @@ import axios from "axios";
 export const callFlightClient = ({ endpoint, params }) => {
   /* 
   TODO:
-  Implement the api call and return the response.
-  The return will be a promise!
+  1. Implement the api call and return the response.
+  2. The return will be a promise!
   */
-  return {
-    places: [],
-  };
-};
-
-// Todo: Implement use of propTypes
-const flightClient = ({ params, endpoint }) => {
   const API_KEY = process.env.REACT_APP_FLIGHT_KEY;
   const baseUrl =
     "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices";
@@ -28,7 +21,7 @@ const flightClient = ({ params, endpoint }) => {
     },
   };
 
-  return axios
+  const apiInstance = axios
     .request(options)
     .then((response) => {
       // Todo: Parse response to JS object
@@ -44,6 +37,11 @@ const flightClient = ({ params, endpoint }) => {
         console.log("Application error...");
       }
     });
+  // return apiInstance;
+  return {
+    places: [],
+  };
 };
 
-export default flightClient;
+// Todo: Implement use of propTypes
+export const flightClient = ({ params, endpoint }) => {};
