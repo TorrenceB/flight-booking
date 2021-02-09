@@ -37,10 +37,10 @@ export const callFlightClient = ({ endpoint, params }) => {
         console.log("Application error...");
       }
     });
-  // return apiInstance;
-  return {
-    places: [],
-  };
+  return apiInstance;
+  // return {
+  //   places: [],
+  // };
 };
 
 // Todo: Implement use of propTypes
