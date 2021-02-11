@@ -4,7 +4,6 @@ import backgroundImage from "./background.jpg";
 import flightClient, { callFlightClient } from "../../../api/flight-client";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Autocomplete from "../../Utility/AutoComplete/Autocomplete";
 
 const Booking = () => {
   const [trip, setTrip] = useState({
@@ -54,18 +53,15 @@ const Booking = () => {
   );
 
   const fetchQuotes = () => {
-    /* 
-      Todo: Add dropdown calendar to departure field,
-      format appropriately to match requirements 
-      of endpoint parameter.
-     */
     const callResponse = callFlightClient({
       endpoint: `/browsequotes/v1.0/US/USD/en-US/SFO-sky/${trip.placeId}/${trip.departureDate}`,
       params: {},
     });
 
     console.log("Call Response: ", callResponse);
-    // return callResponse;
+    callResponse.then((data) => {
+      // Do something with data
+    })
   };
 
   let onChangeHandler = (e) => {
@@ -165,7 +161,6 @@ const Booking = () => {
                       date.parse(//something)
                   */
                   departureDate: date.toISOString().slice(0, 10),
-                  // departureDate: Intl.DateTimeFormat("en-US").format(date),
                 }))
               }
               /* 
