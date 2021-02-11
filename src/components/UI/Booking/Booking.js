@@ -60,7 +60,7 @@ const Booking = () => {
       of endpoint parameter.
      */
     const callResponse = callFlightClient({
-      endpoint: `/browsequotes/v1.0/US/USD/en-US/SFO-sky/${trip.placeId}/2021-03-10`,
+      endpoint: `/browsequotes/v1.0/US/USD/en-US/SFO-sky/${trip.placeId}/${trip.departureDate}`,
       params: {},
     });
 
@@ -154,22 +154,38 @@ const Booking = () => {
                 : ""}
             </datalist>
             <DatePicker
-              selected={trip.departureDate}
               placeholderText="DEPARTURE DATE"
+              dateFormat="yyyy/MM/dd"
+              selected={Date.parse(trip.departureDate)}
+              onChange={(date) =>
+                setTrip((prevState) => ({
+                  ...prevState,
+                  /* Todo: Parse returned Date object
+                      to value that's accepted by endpoint.
+                      date.parse(//something)
+                  */
+                  departureDate: date.toISOString().slice(0, 10),
+                  // departureDate: Intl.DateTimeFormat("en-US").format(date),
+                }))
+              }
               /* 
                 Todo: Fix styling of custom input
-                 to match with Destination input
+                to match with Destination input
+                Todo: Fix calendar to display below departure date. 
               */
               customInput={
                 <input
                   className="booking__form-input"
                   style={{
-                    padding: "6.7%",
+                    marginTop: "2%",
+                    marginLeft: "3%",
+                    marginRight: "5%",
+                    padding: "7.5%",
                   }}
                 />
               }
             />
-            {/* <input placeholder="RETURN DATE" /> */}
+            {/* <input className="booking__form-input" placeholder="RETURN DATE" /> */}
             <button className="booking__form-button" onClick={onClickHandler}>
               SEND IT
             </button>
