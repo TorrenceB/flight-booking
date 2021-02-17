@@ -4,15 +4,16 @@ import backgroundImage from "./background.jpg";
 import flightClient, { callFlightClient } from "../../../api/flight-client";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import AutoComplete from "../../Utility/AutoComplete/AutoComplete";
 
 const Booking = () => {
   const [trip, setTrip] = useState({
+    origin: "",
     destination: "",
     placeId: "",
     departureDate: null,
   });
 
-  // Todo: Experiment with separating date state
   const [suggestions, setSuggestions] = useState([]);
 
   const debounce = (callback, rate) => {
@@ -61,7 +62,7 @@ const Booking = () => {
     console.log("Call Response: ", callResponse);
     callResponse.then((data) => {
       // Do something with data
-    })
+    });
   };
 
   let onChangeHandler = (e) => {
@@ -106,27 +107,32 @@ const Booking = () => {
               datalist element has bad support...
           */}
             {/* <input
-            autoComplete="off"
-            list="origins"
-            type="text"
-            placeholder="ORIGIN?"
-            name="origin"
-            value={trip.origin || ""}
-            onChange={onChangeHandler}
-          />
-          <datalist id="origins">
-            {suggestions.length !== 0
-              ? suggestions["Places"].map((suggestion) => {
-                  return (
-                    <option
-                      key={suggestion.PlaceId}
-                      value={suggestion.PlaceName}
-                    ></option>
-                  );
-                })
-              : ""}
-          </datalist> */}
-            <input
+              className="booking__form-input"
+              autoComplete="off"
+              list="origins"
+              type="text"
+              placeholder="ORIGIN?"
+              name="origin"
+              value={trip.origin || ""}
+              onChange={onChangeHandler}
+            /> */}
+            {/* <datalist id="origins">
+              {suggestions.length !== 0
+                ? suggestions.map((suggestion) => {
+                    return (
+                      <option
+                        key={suggestion.placeId}
+                        value={suggestion.origin}
+                      ></option>
+                    );
+                  })
+                : ""}
+            </datalist> */}
+            <AutoComplete
+              destination={trip.destination}
+              onChangeHandler={onChangeHandler}
+            />
+            {/* <input
               className="booking__form-input"
               autoComplete="off"
               list="destinations"
@@ -148,7 +154,7 @@ const Booking = () => {
                     );
                   })
                 : ""}
-            </datalist>
+            </datalist> */}
             <DatePicker
               placeholderText="DEPARTURE DATE"
               dateFormat="yyyy/MM/dd"
@@ -192,3 +198,63 @@ const Booking = () => {
 };
 
 export default Booking;
+
+// Goal:
+// Provide a list with all start times.
+
+// const example = {
+//   trips: [
+//     {
+//       location: "New York",
+//       time: [
+//         {
+//           start: "07:00",
+//           end: "08:00",
+//         },
+//         {
+//           start: "09:00",
+//           end: "10:00",
+//         },
+//       ],
+//     },
+//     {
+//       location: "Seattle",
+//       time: [
+//         {
+//           start: "07:40",
+//           end: "08:30",
+//         },
+//         {
+//           start: "09:10",
+//           end: "10:20",
+//         },
+//       ],
+//     },
+//   ],
+// };
+
+// initialize new list for only start times
+
+// ['07:00', '09:00', '07:40', '09:10']
+
+// iterateObj([123]);
+
+// const getStartTimes = ({ obj }) => {
+//   const arr = [];
+//   const test = obj.trips.map((trip) => {
+//     const times = trip.time.map((t) => {
+//       // t = timeObj
+//       const startTime = t.start;
+//       arr.push(startTime);
+//     });
+//   });
+
+//   return {arr};
+// };
+
+// const getEndTimes = () => {};
+
+// const list = [];
+// iterateObj({arr: list, obj: example})
+
+// iterateObj({ arr: [], obj: example });

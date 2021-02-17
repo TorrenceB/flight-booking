@@ -27,6 +27,9 @@ export const callFlightClient = ({ endpoint, params }) => {
       // Todo: Parse response to JS object
       const data = response.data;
       return data;
+        // return {
+        //   places: [],
+        // };
     })
     .catch((error) => {
       if (error.response) {
@@ -38,9 +41,7 @@ export const callFlightClient = ({ endpoint, params }) => {
       }
     });
   return apiInstance;
-  // return {
-  //   places: [],
-  // };
+
 };
 
 // Todo: Implement use of propTypes
