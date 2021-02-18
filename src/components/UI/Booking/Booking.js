@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from "react";
 import "./booking.css";
 import backgroundImage from "./background.jpg";
-import flightClient, { callFlightClient } from "../../../api/flight-client";
+import { callFlightClient } from "../../../api/flight-client";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import AutoComplete from "../../Utility/AutoComplete/AutoComplete";
+import AutoSuggestions from "../../Utility/AutoSuggest/AutoSuggest";
 
 const Booking = () => {
   const [trip, setTrip] = useState({
@@ -14,17 +14,15 @@ const Booking = () => {
     departureDate: null,
   });
 
-  const [suggestions, setSuggestions] = useState([]);
-
-  const debounce = (callback, rate) => {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        callback(...args);
-      }, rate);
-    };
-  };
+  // const debounce = (callback, rate) => {
+  //   let timer;
+  //   return (...args) => {
+  //     clearTimeout(timer);
+  //     timer = setTimeout(() => {
+  //       callback(...args);
+  //     }, rate);
+  //   };
+  // };
 
   // const callResponse = callFlightClient({
   //   endpoint: "",
@@ -32,26 +30,26 @@ const Booking = () => {
   // });
   // setSuggestions(callResponse);
 
-  const fetchSuggestions = useCallback(
-    debounce((query) => {
-      // This will be a promise!
-      const callResponse = callFlightClient({
-        endpoint: "/autosuggest/v1.0/US/USD/en-US/",
-        params: {
-          query: query,
-        },
-      });
+  // const fetchSuggestions = useCallback(
+  //   debounce((query) => {
+  //     // This will be a promise!
+  //     const callResponse = callFlightClient({
+  //       endpoint: "/autosuggest/v1.0/US/USD/en-US/",
+  //       params: {
+  //         query: query,
+  //       },
+  //     });
 
-      callResponse.then((data) => {
-        const transformedSuggestions = data.Places.map((d) => ({
-          destination: d.PlaceName,
-          placeId: d.PlaceId,
-        }));
-        setSuggestions(transformedSuggestions);
-      });
-    }, 2000),
-    []
-  );
+  //     callResponse.then((data) => {
+  //       const transformedSuggestions = data.Places.map((d) => ({
+  //         placeName: d.PlaceName,
+  //         placeId: d.PlaceId,
+  //       }));
+  //       setSuggestions(transformedSuggestions);
+  //     });
+  //   }, 2000),
+  //   []
+  // );
 
   const fetchQuotes = () => {
     const callResponse = callFlightClient({
@@ -65,24 +63,24 @@ const Booking = () => {
     });
   };
 
-  let onChangeHandler = (e) => {
-    let selectedPlace =
-      suggestions.length >= 1
-        ? suggestions.find((suggestion) => {
-            if (suggestion.destination === e.target.value) {
-              return true;
-            } else {
-              return false;
-            }
-          })
-        : "";
-    fetchSuggestions(e.target.value);
-    setTrip((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-      placeId: selectedPlace?.placeId,
-    }));
-  };
+  // let onChangeHandler = (e) => {
+  //   let selectedPlace =
+  //     suggestions.length >= 1
+  //       ? suggestions.find((suggestion) => {
+  //           if (suggestion.destination === e.target.value) {
+  //             return true;
+  //           } else {
+  //             return false;
+  //           }
+  //         })
+  //       : "";
+  //   fetchSuggestions(e.target.value);
+  //   setTrip((prevState) => ({
+  //     ...prevState,
+  //     [e.target.name]: e.target.value,
+  //     placeId: selectedPlace?.placeId,
+  //   }));
+  // };
 
   let onClickHandler = (e) => {
     e.preventDefault();
@@ -106,6 +104,11 @@ const Booking = () => {
               for implementing an autosuggest. 
               datalist element has bad support...
           */}
+            <AutoSuggestions
+              value={trip.origin}
+              placeholder="Origin"
+              setTrip={setTrip}
+            />
             {/* <input
               className="booking__form-input"
               autoComplete="off"
@@ -115,23 +118,19 @@ const Booking = () => {
               name="origin"
               value={trip.origin || ""}
               onChange={onChangeHandler}
-            /> */}
-            {/* <datalist id="origins">
+            />
+            <datalist id="origins">
               {suggestions.length !== 0
                 ? suggestions.map((suggestion) => {
                     return (
                       <option
                         key={suggestion.placeId}
-                        value={suggestion.origin}
+                        value={suggestion.placeName}
                       ></option>
                     );
                   })
                 : ""}
             </datalist> */}
-            <AutoComplete
-              destination={trip.destination}
-              onChangeHandler={onChangeHandler}
-            />
             {/* <input
               className="booking__form-input"
               autoComplete="off"
@@ -141,8 +140,11 @@ const Booking = () => {
               name="destination"
               value={trip.destination || ""}
               onChange={onChangeHandler}
-            />
-            <datalist id="destinations">
+            /> */}
+            {/* Todo: Empty out suggestions array when user
+                makes selection
+              */}
+            {/* <datalist id="destinations">
               {suggestions.length !== 0
                 ? suggestions.map((suggestion) => {
                     // Todo: Suggestions don't drop down when entire country entered
@@ -157,7 +159,7 @@ const Booking = () => {
             </datalist> */}
             <DatePicker
               placeholderText="DEPARTURE DATE"
-              dateFormat="yyyy/MM/dd"
+              dateFormat="MMMM d, yyyy"
               selected={Date.parse(trip.departureDate)}
               onChange={(date) =>
                 setTrip((prevState) => ({
