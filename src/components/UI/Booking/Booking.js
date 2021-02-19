@@ -107,7 +107,16 @@ const Booking = () => {
             <AutoSuggestions
               value={trip.origin}
               placeholder="Origin"
-              setTrip={setTrip}
+              /* Pass function from parent to 
+                child to update parent state.
+                Set trip state will be done here.
+              */
+              onChange={(e) => {
+                setTrip((prevState) => ({
+                  ...prevState,
+                  origin: e.target.value,
+                }));
+              }}
             />
             {/* <input
               className="booking__form-input"

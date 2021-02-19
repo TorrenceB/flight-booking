@@ -17,47 +17,22 @@ const AutoSuggestions = (props) => {
     };
   };
 
-  const fetchSuggestions = useCallback(
-    debounce((query) => {
-      // This will be a promise!
-      const callResponse = callFlightClient({
-        endpoint: "/autosuggest/v1.0/US/USD/en-US/",
-        params: {
-          query: query,
-        },
-      });
+  const fetchSuggestions = debounce(({ value }) => {
+    const callResponse = callFlightClient({
+      endpoint: "/autosuggest/v1.0/US/USD/en-US/",
+      params: {
+        query: value,
+      },
+    });
 
-      console.log(callResponse);
-
-      callResponse.then((data) => {
-        const transformedSuggestions = data.Places.map((d) => ({
-          placeName: d.PlaceName,
-          placeId: d.PlaceId,
-        }));
-        setSuggestions(transformedSuggestions);
-      });
-    }, 2000),
-    []
-  );
-
-  let onChangeHandler = (e) => {
-    let selectedPlace =
-      suggestions.length >= 1
-        ? suggestions.find((suggestion) => {
-            if (suggestion.destination === e.target.value) {
-              return true;
-            } else {
-              return false;
-            }
-          })
-        : "";
-    fetchSuggestions(e.target.value);
-    props.setTrip((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-      placeId: selectedPlace?.placeId,
-    }));
-  };
+    callResponse.then((data) => {
+      const transformedSuggestions = data.Places.map((place) => ({
+        placeName: place.PlaceName,
+        placeId: place.PlaceId,
+      }));
+      setSuggestions(transformedSuggestions);
+    });
+  }, 2000);
 
   const getSuggestionValue = (suggestion) => suggestion.placeName;
 
@@ -66,13 +41,13 @@ const AutoSuggestions = (props) => {
   };
 
   const renderSuggestion = (suggestion) => {
-    return <span>{suggestion.placeName}</span>;
+    return <div>{suggestion.placeName}</div>;
   };
 
   const inputProps = {
     placeholder: props.placeholder,
     value: props.value,
-    onChange: onChangeHandler,
+    onChange: props.onChange,
   };
 
   return (
