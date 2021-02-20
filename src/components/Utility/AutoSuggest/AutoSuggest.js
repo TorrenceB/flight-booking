@@ -26,11 +26,11 @@ const AutoSuggestions = (props) => {
     });
 
     callResponse.then((data) => {
-      const transformedSuggestions = data.Places.map((place) => ({
+      const transformedSuggestion = data.Places.map((place) => ({
         placeName: place.PlaceName,
         placeId: place.PlaceId,
       }));
-      setSuggestions(transformedSuggestions);
+      setSuggestions(transformedSuggestion);
     });
   }, 2000);
 
