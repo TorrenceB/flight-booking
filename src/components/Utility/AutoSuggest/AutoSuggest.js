@@ -1,12 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import Autosuggest from "react-autosuggest";
 import { callFlightClient } from "../../../api/flight-client";
 
 import "./autosuggest.css";
 
 const AutoSuggestions = (props) => {
-  const [suggestions, setSuggestions] = useState([]);
-
   const debounce = (callback, rate) => {
     let timer;
     return (...args) => {
@@ -30,14 +28,14 @@ const AutoSuggestions = (props) => {
         placeName: place.PlaceName,
         placeId: place.PlaceId,
       }));
-      setSuggestions(transformedSuggestion);
+      props.setSuggestions(transformedSuggestion);
     });
   }, 2000);
 
   const getSuggestionValue = (suggestion) => suggestion.placeName;
 
   const clearSuggestions = () => {
-    setSuggestions([]);
+    props.setSuggestions([]);
   };
 
   const renderSuggestion = (suggestion) => {
@@ -53,7 +51,7 @@ const AutoSuggestions = (props) => {
   return (
     <div className="autosuggest">
       <Autosuggest
-        suggestions={suggestions}
+        suggestions={props.suggestions}
         onSuggestionsFetchRequested={fetchSuggestions}
         onSuggestionsClearRequested={clearSuggestions}
         getSuggestionValue={getSuggestionValue}

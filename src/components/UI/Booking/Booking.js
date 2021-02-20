@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import "./booking.css";
 import backgroundImage from "./background.jpg";
 import { callFlightClient } from "../../../api/flight-client";
@@ -10,13 +10,20 @@ const Booking = () => {
   const [trip, setTrip] = useState({
     origin: "",
     destination: "",
-    placeId: "",
+    originPlaceId: "",
+    departurePlaceId: "",
     departureDate: null,
+  });
+
+  const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    console.log("Suggestions:", suggestions);
   });
 
   const fetchQuotes = () => {
     const callResponse = callFlightClient({
-      endpoint: `/browsequotes/v1.0/US/USD/en-US/SFO-sky/${trip.placeId}/${trip.departureDate}`,
+      endpoint: `/browsequotes/v1.0/US/USD/en-US/${trip.originPlaceId}/${trip.departurePlaceId}/${trip.departureDate}`,
       params: {},
     });
 
@@ -46,21 +53,35 @@ const Booking = () => {
             <AutoSuggestions
               value={trip.origin}
               placeholder="Origin"
+              suggestions={suggestions}
+              setSuggestions={setSuggestions}
               onChange={(e) => {
+                let selectedPlace =
+                  suggestions.length >= 1
+                    ? suggestions.find((suggestion) => {
+                        if (suggestion.placeName === e.target.value) {
+                          return true;
+                        } else {
+                          return false;
+                        }
+                      })
+                    : "";
                 setTrip((prevState) => ({
                   ...prevState,
                   origin: e.target.value,
+                  // originPlaceId: selectedPlace?.placeId,
                   /* Todo: Pass selected
-                    placeId from (autosuggest) child to
-                    (booking) parent.
-                  */
-                  // placeId: suggestions?.placeId,
+                      placeId from (autosuggest) child to
+                      (booking) parent.
+                      */
                 }));
               }}
             />
             <AutoSuggestions
               value={trip.destination}
               placeholder="Destination"
+              suggestions={suggestions}
+              setSuggestions={setSuggestions}
               onChange={(e) => {
                 setTrip((prevState) => ({
                   ...prevState,
@@ -75,10 +96,6 @@ const Booking = () => {
               onChange={(date) =>
                 setTrip((prevState) => ({
                   ...prevState,
-                  /* Todo: Parse returned Date object
-                      to value that's accepted by endpoint.
-                      date.parse(//something)
-                  */
                   departureDate: date.toISOString().slice(0, 10),
                 }))
               }
@@ -99,7 +116,6 @@ const Booking = () => {
                 />
               }
             />
-            {/* <input className="booking__form-input" placeholder="RETURN DATE" /> */}
             <button className="booking__form-button" onClick={onClickHandler}>
               SEND IT
             </button>
