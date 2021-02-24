@@ -16,6 +16,10 @@ const AutoSuggestions = (props) => {
   };
 
   const fetchSuggestions = debounce(({ value }) => {
+    if (!value) {
+      props.setSuggestions([]);
+    }
+    
     const callResponse = callFlightClient({
       endpoint: "/autosuggest/v1.0/US/USD/en-US/",
       params: {
@@ -45,6 +49,7 @@ const AutoSuggestions = (props) => {
   const inputProps = {
     placeholder: props.placeholder,
     value: props.value,
+    name: props.name,
     onChange: props.onChange,
   };
 

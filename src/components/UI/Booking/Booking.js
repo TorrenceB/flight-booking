@@ -52,28 +52,24 @@ const Booking = () => {
           <AutoSuggestions
             value={trip.origin}
             placeholder="Origin"
+            name="origin"
             suggestions={suggestions}
             setSuggestions={setSuggestions}
-            onChange={(e) => {
+            onChange={(e, { newValue }) => {
               let selectedPlace =
                 suggestions.length >= 1
                   ? suggestions.find((suggestion) => {
-                      if (suggestion.placeName === e.target.value) {
+                      if (suggestion.placeName === newValue) {
                         return true;
                       } else {
                         return false;
                       }
                     })
                   : "";
-              console.log("Selected Place: ", selectedPlace);
               setTrip((prevState) => ({
                 ...prevState,
-                origin: e.target.value,
+                origin: newValue,
                 originPlaceId: selectedPlace?.placeId,
-                /* Todo: Pass selected
-                      placeId from (autosuggest) child to
-                      (booking) parent.
-                      */
               }));
             }}
           />
@@ -82,10 +78,22 @@ const Booking = () => {
             placeholder="Destination"
             suggestions={suggestions}
             setSuggestions={setSuggestions}
-            onChange={(e) => {
+            onChange={(e, { newValue }) => {
+              /* Todo: Refactor selectedPlace variable  */
+              let selectedPlace =
+                suggestions.length >= 1
+                  ? suggestions.find((suggestion) => {
+                      if (suggestion.placeName === newValue) {
+                        return true;
+                      } else {
+                        return false;
+                      }
+                    })
+                  : "";
               setTrip((prevState) => ({
                 ...prevState,
-                destination: e.target.value,
+                destination: newValue,
+                departurePlaceId: selectedPlace?.placeId,
               }));
             }}
           />
