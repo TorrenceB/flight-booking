@@ -34,6 +34,21 @@ const Booking = () => {
     });
   };
 
+  const fetchCurrentTrip = (e, {newValue}) => {
+    let selectedPlace =
+      suggestions.length >= 1
+        ? suggestions.find((suggestion) => {
+            if (suggestion.placeName === newValue) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+        : "";
+
+          setTrip((prevState) => {});
+  };
+
   let onClickHandler = (e) => {
     e.preventDefault();
     fetchQuotes();
@@ -55,47 +70,63 @@ const Booking = () => {
             name="origin"
             suggestions={suggestions}
             setSuggestions={setSuggestions}
-            onChange={(e, { newValue }) => {
-              let selectedPlace =
-                suggestions.length >= 1
-                  ? suggestions.find((suggestion) => {
-                      if (suggestion.placeName === newValue) {
-                        return true;
-                      } else {
-                        return false;
-                      }
-                    })
-                  : "";
+            // onChange={(e, { newValue }) => {
+            updateTrip={(placeName, placeId) => {
               setTrip((prevState) => ({
                 ...prevState,
-                origin: newValue,
-                originPlaceId: selectedPlace?.placeId,
-              }));
+                origin: placeName,
+                 //     origin: newValue,
+                originPlaceId: placeId,
+              }))
             }}
+            // onChange={(e, { newValue }) => {
+            //   // let selectedPlace =
+            //   //   suggestions.length >= 1
+            //   //     ? suggestions.find((suggestion) => {
+            //   //         if (suggestion.placeName === newValue) {
+            //   //           return true;
+            //   //         } else {
+            //   //           return false;
+            //   //         }
+            //   //       })
+            //   //     : "";
+            //   setTrip((prevState) => ({
+            //     ...prevState,
+            //     origin: newValue,
+            //     originPlaceId: fetchCurrentTrip(newValue),
+            //   }));
+            // }}
           />
           <AutoSuggestions
             value={trip.destination}
             placeholder="Destination"
             suggestions={suggestions}
             setSuggestions={setSuggestions}
-            onChange={(e, { newValue }) => {
-              /* Todo: Refactor selectedPlace variable  */
-              let selectedPlace =
-                suggestions.length >= 1
-                  ? suggestions.find((suggestion) => {
-                      if (suggestion.placeName === newValue) {
-                        return true;
-                      } else {
-                        return false;
-                      }
-                    })
-                  : "";
+            updateTrip={(placeName, placeId) => {
               setTrip((prevState) => ({
                 ...prevState,
-                destination: newValue,
-                departurePlaceId: selectedPlace?.placeId,
-              }));
+                destination: placeName,
+                departurePlaceId: placeId,
+              }))
             }}
+            // onChange={(e, { newValue }) => {
+            //   /* Todo: Refactor selectedPlace variable  */
+            //   let selectedPlace =
+            //     suggestions.length >= 1
+            //       ? suggestions.find((suggestion) => {
+            //           if (suggestion.placeName === newValue) {
+            //             return true;
+            //           } else {
+            //             return false;
+            //           }
+            //         })
+            //       : "";
+            //   setTrip((prevState) => ({
+            //     ...prevState,
+            //     destination: newValue,
+            //     departurePlaceId: selectedPlace?.placeId,
+            //   }));
+            // }}
           />
           <DatePicker
             placeholderText="DEPARTURE DATE"

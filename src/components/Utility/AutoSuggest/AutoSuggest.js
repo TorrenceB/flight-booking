@@ -50,7 +50,11 @@ const AutoSuggestions = (props) => {
     placeholder: props.placeholder,
     value: props.value,
     name: props.name,
-    onChange: props.onChange,
+    onChange: (e, {newValue, method}) => {
+      // console.log('New Value: ', newValue);
+      props.updateTrip(newValue);
+
+    }
   };
 
   return (
