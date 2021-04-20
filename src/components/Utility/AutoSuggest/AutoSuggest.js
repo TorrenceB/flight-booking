@@ -19,7 +19,7 @@ const AutoSuggestions = (props) => {
     if (!value) {
       props.setSuggestions([]);
     }
-    
+
     const callResponse = callFlightClient({
       endpoint: "/autosuggest/v1.0/US/USD/en-US/",
       params: {
@@ -50,11 +50,9 @@ const AutoSuggestions = (props) => {
     placeholder: props.placeholder,
     value: props.value,
     name: props.name,
-    onChange: (e, {newValue, method}) => {
-      // console.log('New Value: ', newValue);
+    onChange: (e, { newValue }) => {
       props.updateTrip(newValue);
-
-    }
+    },
   };
 
   return (

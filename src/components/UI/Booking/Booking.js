@@ -34,7 +34,7 @@ const Booking = () => {
     });
   };
 
-  const fetchCurrentTrip = (e, {newValue}) => {
+  const fetchCurrentTrip = (newValue) => {
     let selectedPlace =
       suggestions.length >= 1
         ? suggestions.find((suggestion) => {
@@ -46,7 +46,11 @@ const Booking = () => {
           })
         : "";
 
-          setTrip((prevState) => {});
+    setTrip((prevState) => ({
+      ...prevState,
+      origin: newValue,
+      originPlaceId: selectedPlace?.placeId,
+    }));
   };
 
   let onClickHandler = (e) => {
@@ -70,26 +74,25 @@ const Booking = () => {
             name="origin"
             suggestions={suggestions}
             setSuggestions={setSuggestions}
+            updateTrip={fetchCurrentTrip}
+            // updateTrip={(placeName) => {
+            //   setTrip((prevState) => ({
+            //     ...prevState,
+            //     origin: placeName,
+            //     originPlaceId: "",
+            //   }));
+            // }}
             // onChange={(e, { newValue }) => {
-            updateTrip={(placeName, placeId) => {
-              setTrip((prevState) => ({
-                ...prevState,
-                origin: placeName,
-                 //     origin: newValue,
-                originPlaceId: placeId,
-              }))
-            }}
-            // onChange={(e, { newValue }) => {
-            //   // let selectedPlace =
-            //   //   suggestions.length >= 1
-            //   //     ? suggestions.find((suggestion) => {
-            //   //         if (suggestion.placeName === newValue) {
-            //   //           return true;
-            //   //         } else {
-            //   //           return false;
-            //   //         }
-            //   //       })
-            //   //     : "";
+            // let selectedPlace =
+            //   suggestions.length >= 1
+            //     ? suggestions.find((suggestion) => {
+            //         if (suggestion.placeName === newValue) {
+            //           return true;
+            //         } else {
+            //           return false;
+            //         }
+            //       })
+            //     : "";
             //   setTrip((prevState) => ({
             //     ...prevState,
             //     origin: newValue,
@@ -107,7 +110,7 @@ const Booking = () => {
                 ...prevState,
                 destination: placeName,
                 departurePlaceId: placeId,
-              }))
+              }));
             }}
             // onChange={(e, { newValue }) => {
             //   /* Todo: Refactor selectedPlace variable  */
