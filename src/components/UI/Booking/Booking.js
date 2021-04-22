@@ -28,17 +28,17 @@ const Booking = () => {
       params: {},
     });
 
-    console.log("Call Response: ", callResponse);
     callResponse.then((data) => {
+      console.log("Response: ", data);
       // Do something with data
     });
   };
 
-  const fetchCurrentTrip = (newValue) => {
+  const fetchCurrentTrip = (userSelectedValue) => {
     let selectedPlace =
       suggestions.length >= 1
         ? suggestions.find((suggestion) => {
-            if (suggestion.placeName === newValue) {
+            if (suggestion.placeName === userSelectedValue) {
               return true;
             } else {
               return false;
@@ -46,11 +46,7 @@ const Booking = () => {
           })
         : "";
 
-    setTrip((prevState) => ({
-      ...prevState,
-      origin: newValue,
-      originPlaceId: selectedPlace?.placeId,
-    }));
+    return selectedPlace;
   };
 
   let onClickHandler = (e) => {
@@ -74,62 +70,28 @@ const Booking = () => {
             name="origin"
             suggestions={suggestions}
             setSuggestions={setSuggestions}
-            updateTrip={fetchCurrentTrip}
-            // updateTrip={(placeName) => {
-            //   setTrip((prevState) => ({
-            //     ...prevState,
-            //     origin: placeName,
-            //     originPlaceId: "",
-            //   }));
-            // }}
-            // onChange={(e, { newValue }) => {
-            // let selectedPlace =
-            //   suggestions.length >= 1
-            //     ? suggestions.find((suggestion) => {
-            //         if (suggestion.placeName === newValue) {
-            //           return true;
-            //         } else {
-            //           return false;
-            //         }
-            //       })
-            //     : "";
-            //   setTrip((prevState) => ({
-            //     ...prevState,
-            //     origin: newValue,
-            //     originPlaceId: fetchCurrentTrip(newValue),
-            //   }));
-            // }}
+            updateTrip={(placeName) => {
+              let currentTrip = fetchCurrentTrip(placeName);
+              setTrip((prevState) => ({
+                ...prevState,
+                origin: placeName,
+                originPlaceId: currentTrip?.placeId,
+              }));
+            }}
           />
           <AutoSuggestions
             value={trip.destination}
             placeholder="Destination"
             suggestions={suggestions}
             setSuggestions={setSuggestions}
-            updateTrip={(placeName, placeId) => {
+            updateTrip={(placeName) => {
+              let currentTrip = fetchCurrentTrip(placeName);
               setTrip((prevState) => ({
                 ...prevState,
                 destination: placeName,
-                departurePlaceId: placeId,
+                departurePlaceId: currentTrip?.placeId,
               }));
             }}
-            // onChange={(e, { newValue }) => {
-            //   /* Todo: Refactor selectedPlace variable  */
-            //   let selectedPlace =
-            //     suggestions.length >= 1
-            //       ? suggestions.find((suggestion) => {
-            //           if (suggestion.placeName === newValue) {
-            //             return true;
-            //           } else {
-            //             return false;
-            //           }
-            //         })
-            //       : "";
-            //   setTrip((prevState) => ({
-            //     ...prevState,
-            //     destination: newValue,
-            //     departurePlaceId: selectedPlace?.placeId,
-            //   }));
-            // }}
           />
           <DatePicker
             placeholderText="DEPARTURE DATE"
