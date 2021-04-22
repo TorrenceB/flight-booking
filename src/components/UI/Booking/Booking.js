@@ -2,20 +2,28 @@ import React, { useState, useEffect } from "react";
 import "./booking.css";
 import backgroundImage from "./background.jpg";
 import { callFlightClient } from "../../../api/flight-client";
-import DatePicker from "react-datepicker";
+
 import "react-datepicker/dist/react-datepicker.css";
 import AutoSuggestions from "../../Utility/AutoSuggest/AutoSuggest";
+import DatePicker from "react-datepicker";
+import TripResultModal from "../Modal/Modal";
 
 const Booking = () => {
+  /* Todo: Move state into redux store */
   const [trip, setTrip] = useState({
     origin: "",
     destination: "",
     originPlaceId: "",
     departurePlaceId: "",
     departureDate: null,
+    carrier: "",
+    price: "",
+    direct: false,
   });
 
   const [suggestions, setSuggestions] = useState([]);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     console.log("Suggestions:", suggestions);
@@ -30,7 +38,15 @@ const Booking = () => {
 
     callResponse.then((data) => {
       console.log("Response: ", data);
-      // Do something with data
+      const carrier = data.Carriers[0].Name;
+      const price = data.Quotes[0].MinPrice;
+      const isDirectFlight = data.Quotes[0].Direct;
+      setTrip((prevState) => ({
+        ...prevState,
+        carrier: carrier,
+        price: price,
+        direct: isDirectFlight,
+      }));
     });
   };
 
@@ -49,9 +65,10 @@ const Booking = () => {
     return selectedPlace;
   };
 
-  let onClickHandler = (e) => {
+  const onClickHandler = async (e) => {
     e.preventDefault();
-    fetchQuotes();
+    await fetchQuotes();
+    setModalIsOpen(true);
   };
 
   return (
@@ -124,6 +141,15 @@ const Booking = () => {
             SEND IT
           </button>
         </form>
+        <TripResultModal
+          modalIsOpen={modalIsOpen}
+          origin={trip.origin}
+          destination={trip.destination}
+          departureDate={trip.departureDate}
+          carrier={trip.carrier}
+          price={trip.price}
+          direct={`${trip.direct}`}
+        />
       </div>
     </div>
   );
