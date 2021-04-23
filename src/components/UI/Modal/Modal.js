@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
+import ModalListTile from "../ModalListTile/ModalListTile";
 
 import "../Modal/modal.css";
 
@@ -22,20 +23,13 @@ const TripResultModal = (props) => {
 
         {props.tripResults.map((trip, index) => {
           return (
-            <div className="row" key={index}>
-              <div className="col">
-                <h4>Allegiant</h4>
-              </div>
-              <div className="col">
-                <h4>${trip.price}</h4>
-              </div>
-              <div className="col">
-                <h4>{`${trip.isFlightDirect}`}</h4>
-              </div>
-              <div className="col">
-                <button>Select Flight</button>
-              </div>
-            </div>
+            <ModalListTile
+              key={index}
+              colOneText={"Allegiant"}
+              colTwoText={`$${trip.price}`}
+              colThreeText={`${trip.isFlightDirect}`}
+              buttonText={"Select Flight"}
+            />
           );
         })}
       </Modal>

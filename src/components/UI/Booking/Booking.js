@@ -38,12 +38,15 @@ const Booking = () => {
     });
 
     await callResponse.then((data) => {
-      // console.log("Response: ", data);
+      console.log("Response: ", data);
 
       data.Quotes.forEach((quote) => {
-        // let carrierId = quote.OutboundLeg.CarrierIds.map(
-        //   (carrierId) => carrierId
-        // );
+        /* Todo: Need to match carrier Id with id in Carriers array
+          and return the appropriate carrier name.
+        */
+        const carrierId = quote.OutboundLeg.CarrierIds.map(
+          (carrierId) => carrierId
+        );
         const flight = {
           price: quote.MinPrice,
           isFlightDirect: quote.Direct,
