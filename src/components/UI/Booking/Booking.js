@@ -16,38 +16,42 @@ const Booking = () => {
     originPlaceId: "",
     departurePlaceId: "",
     departureDate: null,
-    carrier: "",
-    price: "",
-    direct: false,
   });
 
   const [suggestions, setSuggestions] = useState([]);
+  const [tripResults, setTripResults] = useState([]);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     console.log("Suggestions:", suggestions);
     console.log("Trip: ", trip);
+    console.log("Trip results: ", tripResults);
   });
 
-  const fetchQuotes = () => {
+  const fetchQuotes = async () => {
+    console.log("Running fetch quotes...");
+    const carrierResults = [];
     const callResponse = callFlightClient({
       endpoint: `/browsequotes/v1.0/US/USD/en-US/${trip.originPlaceId}/${trip.departurePlaceId}/${trip.departureDate}`,
       params: {},
     });
 
-    callResponse.then((data) => {
-      console.log("Response: ", data);
-      const carrier = data.Carriers[0].Name;
-      const price = data.Quotes[0].MinPrice;
-      const isDirectFlight = data.Quotes[0].Direct;
-      setTrip((prevState) => ({
-        ...prevState,
-        carrier: carrier,
-        price: price,
-        direct: isDirectFlight,
-      }));
+    await callResponse.then((data) => {
+      // console.log("Response: ", data);
+
+      data.Quotes.forEach((quote) => {
+        // let carrierId = quote.OutboundLeg.CarrierIds.map(
+        //   (carrierId) => carrierId
+        // );
+        const flight = {
+          price: quote.MinPrice,
+          isFlightDirect: quote.Direct,
+        };
+        carrierResults.push(flight);
+      });
     });
+    setTripResults(carrierResults);
   };
 
   const fetchCurrentTrip = (userSelectedValue) => {
@@ -146,9 +150,7 @@ const Booking = () => {
           origin={trip.origin}
           destination={trip.destination}
           departureDate={trip.departureDate}
-          carrier={trip.carrier}
-          price={trip.price}
-          direct={`${trip.direct}`}
+          tripResults={tripResults}
         />
       </div>
     </div>

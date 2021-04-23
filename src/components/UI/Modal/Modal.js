@@ -19,34 +19,25 @@ const TripResultModal = (props) => {
             <h2>{props.departureDate}</h2>
           </div>
         </div>
-        <div className="row">
-          <div className="col">
-            <h4>{props.carrier}</h4>
-          </div>
-          <div className="col">
-            <h4>${props.price}</h4>
-          </div>
-          <div className="col">
-            <h4>{props.direct}</h4>
-          </div>
-          <div className="col">
-            <button>Select Flight</button>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <h4>Delta Airlines</h4>
-          </div>
-          <div className="col">
-            <h4>$260</h4>
-          </div>
-          <div className="col">
-            <h4>Connecting</h4>
-          </div>
-          <div className="col">
-            <button>Select Flight</button>
-          </div>
-        </div>
+
+        {props.tripResults.map((trip, index) => {
+          return (
+            <div className="row" key={index}>
+              <div className="col">
+                <h4>Allegiant</h4>
+              </div>
+              <div className="col">
+                <h4>${trip.price}</h4>
+              </div>
+              <div className="col">
+                <h4>{`${trip.isFlightDirect}`}</h4>
+              </div>
+              <div className="col">
+                <button>Select Flight</button>
+              </div>
+            </div>
+          );
+        })}
       </Modal>
     </div>
   );
