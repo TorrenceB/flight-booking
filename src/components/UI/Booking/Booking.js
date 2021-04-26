@@ -30,7 +30,6 @@ const Booking = () => {
   });
 
   const fetchQuotes = async () => {
-    console.log("Running fetch quotes...");
     const carrierResults = [];
     const callResponse = callFlightClient({
       endpoint: `/browsequotes/v1.0/US/USD/en-US/${trip.originPlaceId}/${trip.departurePlaceId}/${trip.departureDate}`,
@@ -38,18 +37,18 @@ const Booking = () => {
     });
 
     await callResponse.then((data) => {
-      console.log("Response: ", data);
-
       data.Quotes.forEach((quote) => {
-        /* Todo: Need to match carrier Id with id in Carriers array
-          and return the appropriate carrier name.
-        */
-        const carrierId = quote.OutboundLeg.CarrierIds.map(
-          (carrierId) => carrierId
-        );
+        const carrier = data.Carriers.find((carrier) => {
+          const matchedCarrier =
+            carrier.CarrierId === quote.OutboundLeg.CarrierIds[0];
+
+          return matchedCarrier;
+        });
+
         const flight = {
           price: quote.MinPrice,
           isFlightDirect: quote.Direct,
+          carrierName: carrier.Name,
         };
         carrierResults.push(flight);
       });
@@ -72,10 +71,18 @@ const Booking = () => {
     return selectedPlace;
   };
 
+  const onSelectFlightHandler = () => {
+    console.log("Flight selected!");
+  };
+
   const onClickHandler = async (e) => {
     e.preventDefault();
     await fetchQuotes();
     setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
   };
 
   return (
@@ -150,10 +157,12 @@ const Booking = () => {
         </form>
         <TripResultModal
           modalIsOpen={modalIsOpen}
+          onRequestClose={closeModal}
           origin={trip.origin}
           destination={trip.destination}
           departureDate={trip.departureDate}
           tripResults={tripResults}
+          onClick={onSelectFlightHandler}
         />
       </div>
     </div>

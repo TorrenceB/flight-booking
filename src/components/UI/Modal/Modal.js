@@ -7,7 +7,7 @@ import "../Modal/modal.css";
 const TripResultModal = (props) => {
   return (
     <div className="modal">
-      <Modal isOpen={props.modalIsOpen}>
+      <Modal isOpen={props.modalIsOpen} onRequestClose={props.onRequestClose}>
         <h1 className="modal-header">Trip Results</h1>
         <div className="row">
           <div className="col">
@@ -21,17 +21,24 @@ const TripResultModal = (props) => {
           </div>
         </div>
 
-        {props.tripResults.map((trip, index) => {
-          return (
-            <ModalListTile
-              key={index}
-              colOneText={"Allegiant"}
-              colTwoText={`$${trip.price}`}
-              colThreeText={`${trip.isFlightDirect}`}
-              buttonText={"Select Flight"}
-            />
-          );
-        })}
+        {props.tripResults.length > 0 ? (
+          props.tripResults.map((trip, index) => {
+            return (
+              <ModalListTile
+                key={index}
+                colOneText={trip.carrierName}
+                colTwoText={`$${trip.price}`}
+                colThreeText={`${trip.isFlightDirect}`}
+                buttonText={"Select Flight"}
+                onClick={props.onClick}
+              />
+            );
+          })
+        ) : (
+          <div>
+            <h3>There are currently no trips available for selected date</h3>
+          </div>
+        )}
       </Modal>
     </div>
   );

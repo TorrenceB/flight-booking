@@ -15,7 +15,7 @@ const ModalListTile = (props) => {
         <h4>{props.colThreeText}</h4>
       </div>
       <div className="col">
-        <button>{props.buttonText}</button>
+        <button onClick={props.onClick}>{props.buttonText}</button>
       </div>
     </div>
   );
