@@ -37,26 +37,35 @@ const Booking = () => {
     });
 
     await callResponse.then((data) => {
-      data.Quotes.forEach((quote) => {
-        const carrier = data.Carriers.find((carrier) => {
-          const matchedCarrier =
-            carrier.CarrierId === quote.OutboundLeg.CarrierIds[0];
+      console.log("Data: ", data);
+      const carrierMap = new Map();
 
-          return matchedCarrier;
-        });
+      data.Quotes.forEach((quote) => {
+        carrierMap.set({}, quote.OutboundLeg.CarrierIds[0]);
+        // const carrier = data.Carriers.find((carrier) => {
+        //   const matchedCarrier =
+        //     carrier.CarrierId === quote.OutboundLeg.CarrierIds[0];
+        //   return matchedCarrier;
+        // });
+
+        // Get carrier name //
+        /* 1.  set key to carrier object
+          2.  set value to quote.OutboundLeg.CarrierIds[0]
+        */
 
         const flight = {
           price: quote.MinPrice,
           isFlightDirect: quote.Direct,
-          carrierName: carrier.Name,
+          // carrierName: carrier.Name,
         };
         carrierResults.push(flight);
       });
+      console.log(carrierMap);
     });
     setTripResults(carrierResults);
   };
 
-  const fetchCurrentTrip = (userSelectedValue) => {
+  const fetchAirport = (userSelectedValue) => {
     let selectedPlace =
       suggestions.length >= 1
         ? suggestions.find((suggestion) => {
@@ -102,7 +111,7 @@ const Booking = () => {
             suggestions={suggestions}
             setSuggestions={setSuggestions}
             updateTrip={(placeName) => {
-              let currentTrip = fetchCurrentTrip(placeName);
+              let currentTrip = fetchAirport(placeName);
               setTrip((prevState) => ({
                 ...prevState,
                 origin: placeName,
@@ -116,7 +125,7 @@ const Booking = () => {
             suggestions={suggestions}
             setSuggestions={setSuggestions}
             updateTrip={(placeName) => {
-              let currentTrip = fetchCurrentTrip(placeName);
+              let currentTrip = fetchAirport(placeName);
               setTrip((prevState) => ({
                 ...prevState,
                 destination: placeName,
