@@ -40,27 +40,20 @@ const Booking = () => {
       console.log("Data: ", data);
       const carrierMap = new Map();
 
-      data.Quotes.forEach((quote) => {
-        carrierMap.set({}, quote.OutboundLeg.CarrierIds[0]);
-        // const carrier = data.Carriers.find((carrier) => {
-        //   const matchedCarrier =
-        //     carrier.CarrierId === quote.OutboundLeg.CarrierIds[0];
-        //   return matchedCarrier;
-        // });
+      data.Carriers.forEach(({ CarrierId, Name }) =>
+        carrierMap.set(CarrierId, Name)
+      );
 
-        // Get carrier name //
-        /* 1.  set key to carrier object
-          2.  set value to quote.OutboundLeg.CarrierIds[0]
-        */
+      data.Quotes.forEach((quote) => {
+        const carrierName = carrierMap.get(quote.OutboundLeg.CarrierIds[0]);
 
         const flight = {
           price: quote.MinPrice,
           isFlightDirect: quote.Direct,
-          // carrierName: carrier.Name,
+          carrierName: carrierName,
         };
         carrierResults.push(flight);
       });
-      console.log(carrierMap);
     });
     setTripResults(carrierResults);
   };
