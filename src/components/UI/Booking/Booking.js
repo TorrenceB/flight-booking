@@ -40,6 +40,13 @@ const Booking = () => {
       console.log("Data: ", data);
       const carrierMap = new Map();
 
+      /* 
+      Todo: Reduce Carriers array to single object 
+      that matches CarrierId to Name
+      */
+
+      // data.Carriers.reduce((accumulator, currentVal) => {}, 0);
+
       data.Carriers.forEach(({ CarrierId, Name }) =>
         carrierMap.set(CarrierId, Name)
       );

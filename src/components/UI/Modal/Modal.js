@@ -22,18 +22,20 @@ const TripResultModal = (props) => {
         </div>
 
         {props.tripResults.length > 0 ? (
-          props.tripResults.map((trip, index) => {
-            return (
-              <ModalListTile
-                key={index}
-                colOneText={trip.carrierName}
-                colTwoText={`$${trip.price}`}
-                colThreeText={`${trip.isFlightDirect}`}
-                buttonText={"Select Flight"}
-                onClick={props.onClick}
-              />
-            );
-          })
+          props.tripResults.map(
+            ({ carrierName, price, isFlightDirect }, index) => {
+              return (
+                <ModalListTile
+                  key={index}
+                  colOneText={carrierName}
+                  colTwoText={`$${price}`}
+                  colThreeText={`${isFlightDirect}`}
+                  buttonText={"Select Flight"}
+                  onClick={props.onClick}
+                />
+              );
+            }
+          )
         ) : (
           <div>
             <h3>There are currently no trips available for selected date</h3>
