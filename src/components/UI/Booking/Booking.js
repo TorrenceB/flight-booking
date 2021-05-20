@@ -37,32 +37,48 @@ const Booking = () => {
     });
 
     await callResponse.then((data) => {
-      console.log("Data: ", data);
-      const carrierMap = new Map();
+      if (data !== null && data !== undefined) {
+        console.log("Data: ", data);
+        // const carrierMap = new Map();
 
-      /* 
-      Todo: Reduce Carriers array to single object 
-      that matches CarrierId to Name
-      */
+        /* 
+        Todo: Reduce Carriers array to single object 
+        that matches CarrierId to Name.
+        */
 
-      // data.Carriers.reduce((accumulator, currentVal) => {}, 0);
+        // data.Carriers.forEach(({ CarrierId, Name }) =>
+        //   carrierMap.set(CarrierId, Name)
+        // );
 
-      data.Carriers.forEach(({ CarrierId, Name }) =>
-        carrierMap.set(CarrierId, Name)
-      );
+        const singleCarriersMap = data.Carriers.reduce(
+          (map, currentValue) => ({
+            ...map,
+            [currentValue.CarrierId]: currentValue.Name,
+          }),
+          {}
+        );
 
-      data.Quotes.forEach((quote) => {
-        const carrierName = carrierMap.get(quote.OutboundLeg.CarrierIds[0]);
+        data.Quotes.forEach((quote) => {
+          // const carrierName = carrierMap.get(quote.OutboundLeg.CarrierIds[0]);
+          const carrierName = singleCarriersMap.hasOwnProperty(
+            quote.OutboundLeg.CarrierIds[0]
+          );
 
-        const flight = {
-          price: quote.MinPrice,
-          isFlightDirect: quote.Direct,
-          carrierName: carrierName,
-        };
-        carrierResults.push(flight);
-      });
+          console.log(carrierName);
+
+          const flight = {
+            price: quote.MinPrice,
+            isFlightDirect: quote.Direct,
+            carrierName: carrierName ?? "",
+          };
+          carrierResults.push(flight);
+        });
+
+        setTripResults(carrierResults);
+      } else {
+        data = {};
+      }
     });
-    setTripResults(carrierResults);
   };
 
   const fetchAirport = (userSelectedValue) => {
