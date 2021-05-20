@@ -23,12 +23,6 @@ const Booking = () => {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  useEffect(() => {
-    console.log("Suggestions:", suggestions);
-    console.log("Trip: ", trip);
-    console.log("Trip results: ", tripResults);
-  });
-
   const fetchQuotes = async () => {
     const carrierResults = [];
     const callResponse = callFlightClient({
@@ -39,32 +33,15 @@ const Booking = () => {
     await callResponse.then((data) => {
       if (data !== null && data !== undefined) {
         console.log("Data: ", data);
-        // const carrierMap = new Map();
 
-        /* 
-        Todo: Reduce Carriers array to single object 
-        that matches CarrierId to Name.
-        */
-
-        // data.Carriers.forEach(({ CarrierId, Name }) =>
-        //   carrierMap.set(CarrierId, Name)
-        // );
-
-        const singleCarriersMap = data.Carriers.reduce(
-          (map, currentValue) => ({
-            ...map,
-            [currentValue.CarrierId]: currentValue.Name,
-          }),
-          {}
-        );
+        const singleCarriersMap = data.Carriers.reduce((acc, currentValue) => {
+          return acc.set(`${currentValue.CarrierId}`, currentValue.Name);
+        }, new Map());
 
         data.Quotes.forEach((quote) => {
-          // const carrierName = carrierMap.get(quote.OutboundLeg.CarrierIds[0]);
-          const carrierName = singleCarriersMap.hasOwnProperty(
-            quote.OutboundLeg.CarrierIds[0]
+          const carrierName = singleCarriersMap.get(
+            `${quote.OutboundLeg.CarrierIds[0]}`
           );
-
-          console.log(carrierName);
 
           const flight = {
             price: quote.MinPrice,

@@ -24,7 +24,6 @@ export const callFlightClient = ({ endpoint, params }) => {
   const apiInstance = axios
     .request(options)
     .then((response) => {
-      // Todo: Parse response to JS object
       const data = response.data;
       return data;
     })
